@@ -8,10 +8,11 @@ import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
-import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.apache.log4j.Logger;
 
 import br.com.consultemed.models.Medico;
 import br.com.consultemed.services.MedicoService;
@@ -25,6 +26,8 @@ import lombok.Setter;
 @Named
 @RequestScoped
 public class MedicoController{
+	
+	final static Logger logger = Logger.getLogger(MedicoController.class);
 	
 	@Getter
 	@Setter
@@ -42,7 +45,6 @@ public class MedicoController{
 	@Inject
 	private MedicoService service;
 	
-	
 	public String editar() {
 		this.medico = this.medicoEditar;
 		return "/pages/medicos/addMedicos.xhtml";
@@ -51,8 +53,9 @@ public class MedicoController{
 	public String excluir() throws Exception {
 		this.medico = this.medicoEditar;
 		this.service.deletarMedico(this.medico.getId());
-		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Info", "PrimeFaces Rocks."));
-		return "/pages/medicos/medicos.xhtml?faces-redirect=true";
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_WARN, "Médico " +medico.getNome()+ ", excluído com sucesso", null));
+		listaMedicos();
+		return "/pages/medicos/medicos.xhtml";
 	}
 	
 	public String novoMedico() {
@@ -60,13 +63,16 @@ public class MedicoController{
 		return "/pages/medicos/addMedicos.xhtml?faces-redirect=true";
 	}
 	
-	public String addMedico() {
+	public String addMedico() throws Exception {
 		this.service.salvarMedico(this.medico);
-		return "/pages/medicos/medicos.xhtml?faces-redirect=true";
+		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Médico " +medico.getNome()+ ", cadastrado com sucesso", null));
+		listaMedicos();
+		return "/pages/medicos/medicos.xhtml";
 	}
 	
-	public List<Medico> listaMedicos(){
+	public List<Medico> listaMedicos() throws Exception{
 		this.medicos = this.service.listaMedico();
-		return medicos;
+		return this.medicos;
 	}
+	
 }
