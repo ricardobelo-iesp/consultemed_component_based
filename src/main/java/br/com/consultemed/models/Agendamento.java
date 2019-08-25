@@ -1,15 +1,20 @@
-/**
+	/**
  * 
  */
 package br.com.consultemed.models;
 
 import java.io.Serializable;
 
+import javax.inject.Inject;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
@@ -24,11 +29,11 @@ import lombok.Setter;
  *
  */
 
-@NamedQueries({ @NamedQuery(name = "Medido.findAll", query = "SELECT m FROM Medico m")})
+@NamedQueries({ @NamedQuery(name = "Agendamento.findAll", query = "SELECT m FROM Agendamento m")})
 @NoArgsConstructor
 @Entity
-@Table(name = "TB_MEDICOS")
-public class Medico implements Serializable{
+@Table(name = "TB_AGENDAMENTOS")
+public class Agendamento implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Getter
@@ -39,23 +44,31 @@ public class Medico implements Serializable{
 	
 	@Getter
 	@Setter
-	@Column(name = "NOME")
-	private String nome;
+	@Inject
+	@ManyToOne
+	@JoinColumn(name = "ID_MEDICO")
+	private Medico medico;
+		
+	@Getter
+	@Setter
+	@ManyToOne
+	@JoinColumn(name = "ID_PACIENTE")
+	private Paciente paciente;
+
+	@Getter
+	@Setter
+	@Column(name = "DATA_AGENDAMENTO")
+	private String data_agendamento;
+
+	@Getter
+	@Setter
+	@Column(name = "DATA_CONSULTA")
+	private String data_consulta;
 	
 	@Getter
 	@Setter
-	@Column(name = "CRM")
-	private String crm;
-	
-	@Getter
-	@Setter
-	@Column(name = "EMAIL")
-	private String email;
-	
-	@Getter
-	@Setter
-	@Column(name = "TELEFONE")
-	private String telefone;
+	@Enumerated(EnumType.STRING)
+	private StatusAgendamento status;
 
 	@Override
 	public int hashCode() {
@@ -73,14 +86,18 @@ public class Medico implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Medico other = (Medico) obj;
+		Agendamento other = (Agendamento) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
+	}	
+	
+	
+	
+	
 	
 	
 }

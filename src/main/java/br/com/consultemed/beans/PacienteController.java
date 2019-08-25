@@ -12,9 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import br.com.consultemed.models.Medico;
 import br.com.consultemed.models.Paciente;
-import br.com.consultemed.services.MedicoService;
 import br.com.consultemed.services.PacienteService;
 import lombok.Getter;
 import lombok.Setter;

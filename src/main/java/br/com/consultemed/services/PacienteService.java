@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import br.com.consultemed.models.Medico;
 import br.com.consultemed.models.Paciente;
 import br.com.consultemed.repository.repositories.PacienteRepository;
 
@@ -31,4 +30,5 @@ public class PacienteService {
 	public void deletarPaciente(Long id) throws Exception {
 		this.dao.deleteById(id);
 	}
+	
 }
